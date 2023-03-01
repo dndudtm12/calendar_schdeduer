@@ -29,17 +29,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 selectedDay: selectedDay,
                 focusedDay: focusedDay,
                 onDaySelected: onDaySelected),
-            const SizedBox(
+            SizedBox(
               height: 8.0,
             ),
             TodayBanner(
               selectedDate: selectedDay!,
               scheduleCount: 3,
             ),
-            const SizedBox(
+            SizedBox(
               height: 8.0,
             ),
-            const _ScheduleList(),
+            _ScheduleList(),
           ],
         ),
       ),
