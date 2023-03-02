@@ -34,7 +34,7 @@ class TodayBanner extends StatelessWidget {
               style: testStyle,
             ),
             Text(
-              '$scheduleCount',
+              '$scheduleCount개',
               style: testStyle,
             ),
           ],

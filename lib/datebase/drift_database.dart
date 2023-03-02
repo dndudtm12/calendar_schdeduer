@@ -15,6 +15,7 @@ part 'drift_database.g.dart';
     CategoryColors,
   ],
 )
+
 class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
 
@@ -26,6 +27,8 @@ class LocalDataBase extends _$LocalDataBase {
 
   Future<List<CategoryColor>> getCategoryColors() =>
       select(categoryColors).get();
+  Stream<List<Schedule>> watchSchedules() =>
+      select(schedules).watch();
 
   @override
   int get schemaVersion => 1;
