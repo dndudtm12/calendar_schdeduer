@@ -5,13 +5,14 @@ import 'package:flutter/services.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final bool isTime;
+  final String initialValue;
   final FormFieldSetter<String>? onSave;
 
   const CustomTextField({
     required this.label,
     required this.isTime,
     required this.onSave,
-    Key? key,
+    Key? key, required this.initialValue,
   }) : super(key: key);
 
   @override
@@ -61,6 +62,7 @@ class CustomTextField extends StatelessWidget {
       expands: !isTime,
       keyboardType: isTime ? TextInputType.number : TextInputType.multiline,
       maxLines: isTime ? 1 : null,
+      initialValue: initialValue,
       inputFormatters: isTime
           ? [
               FilteringTextInputFormatter.digitsOnly,
@@ -71,6 +73,8 @@ class CustomTextField extends StatelessWidget {
         border: InputBorder.none,
         filled: true,
         fillColor: Colors.grey[300],
+        suffixText: isTime ?  '시' : null,
+
       ),
     );
   }

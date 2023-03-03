@@ -35,16 +35,27 @@ class LocalDataBase extends _$LocalDataBase {
     ]);
 
     query.where(schedules.date.equals(date));
+    query.orderBy([
+      OrderingTerm.asc(schedules.startTime)
+    ]);
 
     return query.watch().map(
           (rows) => rows.map(
             (row) => ScheduleWithColor(
-              schedule: row.readTable(schedulse),
-              categoryColor: row.readTable(categoryColor),
+              schedule: row.readTable(schedules),
+              categoryColor: row.readTable(categoryColors),
             ),
-          ),
+          ).toList(),
         );
   }
+
+  Future<Schedule> watchSchedule(int id) => (select(schedules)..where((tbl) => tbl.id.equals(id))).getSingle();
+
+  Future<int> removeSchedule(int id) =>
+      (delete(schedules)..where((tbl) => tbl.id.equals(id))).go();
+
+  Future<int> updateScheduleById(int id, SchedulesCompanion data) =>
+      (update(schedules)..where((tbl) => tbl.id.equals(id))).write(data);
 
   /*{
     */ /*final query = select(schedules);
