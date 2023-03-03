@@ -7,6 +7,8 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import '../model/schedule_with_color.dart';
+
 part 'drift_database.g.dart';
 
 @DriftDatabase(
@@ -15,7 +17,6 @@ part 'drift_database.g.dart';
     CategoryColors,
   ],
 )
-
 class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
 
@@ -27,8 +28,34 @@ class LocalDataBase extends _$LocalDataBase {
 
   Future<List<CategoryColor>> getCategoryColors() =>
       select(categoryColors).get();
-  Stream<List<Schedule>> watchSchedules() =>
-      select(schedules).watch();
+
+  Stream<List<ScheduleWithColor>> watchSchedules(DateTime date) {
+    final query = select(schedules).join([
+      innerJoin(categoryColors, categoryColors.id.equalsExp(schedules.colorId))
+    ]);
+
+    query.where(schedules.date.equals(date));
+
+    return query.watch().map(
+          (rows) => rows.map(
+            (row) => ScheduleWithColor(
+              schedule: row.readTable(schedulse),
+              categoryColor: row.readTable(categoryColor),
+            ),
+          ),
+        );
+  }
+
+  /*{
+    */ /*final query = select(schedules);
+    query.where((tbl) => tbl.date.equals(date));
+    return query.watch();
+
+    select(schedules).where((tbl) => tbl.date.equals(date)).watch();
+    */ /*
+
+    return (select(schedules)..where((tbl) => tbl.date.equals(date))).watch();
+  }*/
 
   @override
   int get schemaVersion => 1;
